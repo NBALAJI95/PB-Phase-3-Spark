@@ -1,0 +1,23 @@
+dfc = sqlContext.read.load('file:////home/cloudera/Documents/words_counts.csv', 
+                          format='com.databricks.spark.csv', 
+                          header='true', 
+                          inferSchema='true')
+dfc.show()
+
+dfc.registerAsTable('train1_table')
+dfd = sqlContext.sql('SELECT * FROM train1_table ORDER BY Count DESC LIMIT 50')
+dfd.distinct().count()
+
+df = sqlContext.read.load('file:////home/cloudera/Documents/ht_tz1.csv', 
+                          format='com.databricks.spark.csv', 
+                          header='true', 
+                          inferSchema='true')
+
+df.printSchema()
+
+dfd.registerAsTable('train_table123')
+df.registerAsTable('train_table12')
+df1 = sqlContext.sql('SELECT train_table123.HashTags, TimeZones FROM train_table123 JOIN train_table12 ON train_table12.HashTags = train_table123.HashTags')
+df1.show()
+
+##################################
